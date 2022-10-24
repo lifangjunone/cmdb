@@ -6,21 +6,19 @@ import (
 	"net/http"
 	"time"
 
+	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 	"github.com/emicklei/go-restful/v3"
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
-	restfulspec "github.com/emicklei/go-restful-openapi/v2"
 
 	"github.com/infraboard/mcube/app"
 
 	"github.com/lifangjunone/cmdb/conf"
 	"github.com/lifangjunone/cmdb/swagger"
-
 )
 
 // NewHTTPService 构建函数
 func NewHTTPService() *HTTPService {
-
 
 	r := restful.DefaultContainer
 	// Optionally, you can install the Swagger Service which provides a nice Web UI on your REST API
@@ -47,11 +45,10 @@ func NewHTTPService() *HTTPService {
 	}
 
 	return &HTTPService{
-		r:        r,
-		server:   server,
-		l:        zap.L().Named("HTTP Service"),
-		c:        conf.C(),
-
+		r:      r,
+		server: server,
+		l:      zap.L().Named("HTTP Service"),
+		c:      conf.C(),
 	}
 }
 
@@ -61,8 +58,6 @@ type HTTPService struct {
 	l      logger.Logger
 	c      *conf.Config
 	server *http.Server
-
-
 }
 
 func (s *HTTPService) PathPrefix() string {
@@ -81,8 +76,6 @@ func (s *HTTPService) Start() error {
 		PostBuildSwaggerObjectHandler: swagger.Docs}
 	s.r.Add(restfulspec.NewOpenAPIService(config))
 	s.l.Infof("Get the API using http://%s%s", s.c.App.HTTP.Addr(), config.APIPath)
-
-
 
 	// 启动 HTTP服务
 	s.l.Infof("HTTP服务启动成功, 监听地址: %s", s.server.Addr)
@@ -106,4 +99,3 @@ func (s *HTTPService) Stop() error {
 	}
 	return nil
 }
-

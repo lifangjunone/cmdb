@@ -8,8 +8,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/spf13/cobra"
 	"github.com/infraboard/mcube/app"
+	"github.com/spf13/cobra"
 
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
@@ -36,8 +36,6 @@ var serviceCmd = &cobra.Command{
 		if err := loadGlobalLogger(); err != nil {
 			return err
 		}
-
-
 
 		// 初始化全局app
 		if err := app.InitAllApp(); err != nil {
@@ -86,13 +84,12 @@ type service struct {
 	http *protocol.HTTPService
 	grpc *protocol.GRPCService
 
-	log  logger.Logger
+	log logger.Logger
 }
 
 func (s *service) start() error {
 	s.log.Infof("loaded grpc app: %s", app.LoadedGrpcApp())
-s.log.Infof("loaded http app: %s", app.LoadedRESTfulApp())
-
+	s.log.Infof("loaded http app: %s", app.LoadedRESTfulApp())
 
 	s.log.Infof("loaded internal app: %s", app.LoadedInternalApp())
 
@@ -156,8 +153,6 @@ func loadGlobalLogger() error {
 	zap.L().Named("INIT").Info(logInitMsg)
 	return nil
 }
-
-
 
 func (s *service) waitSign(sign chan os.Signal) {
 	for sg := range sign {

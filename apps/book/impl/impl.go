@@ -1,10 +1,7 @@
 package impl
 
 import (
-"database/sql"
-
-
-	
+	"database/sql"
 
 	"github.com/infraboard/mcube/app"
 	"github.com/infraboard/mcube/logger"
@@ -21,19 +18,18 @@ var (
 )
 
 type service struct {
-db   *sql.DB
+	db *sql.DB
 
-	log  logger.Logger
+	log logger.Logger
 	book.UnimplementedServiceServer
 }
 
 func (s *service) Config() error {
-db, err := conf.C().MySQL.GetDB()
+	db, err := conf.C().MySQL.GetDB()
 	if err != nil {
 		return err
 	}
 	s.db = db
-
 
 	s.log = zap.L().Named(s.Name())
 	return nil

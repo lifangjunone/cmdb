@@ -2,11 +2,11 @@ package impl
 
 import (
 	"context"
-"database/sql"
+	"database/sql"
 
 	"github.com/infraboard/mcube/exception"
 	"github.com/infraboard/mcube/pb/request"
-"github.com/infraboard/mcube/sqlbuilder"
+	"github.com/infraboard/mcube/sqlbuilder"
 
 	"github.com/lifangjunone/cmdb/apps/book"
 )
@@ -161,5 +161,3 @@ func (s *service) DeleteBook(ctx context.Context, req *book.DeleteBookRequest) (
 
 	return ins, nil
 }
-
-

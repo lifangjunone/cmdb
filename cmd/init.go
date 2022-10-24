@@ -1,14 +1,14 @@
 package cmd
 
 import (
-"context"
+	"context"
 	"fmt"
 	"io/ioutil"
 	"time"
 
 	"github.com/spf13/cobra"
 
-"github.com/lifangjunone/cmdb/conf"
+	"github.com/lifangjunone/cmdb/conf"
 )
 
 var (
@@ -26,7 +26,7 @@ var initCmd = &cobra.Command{
 			return err
 		}
 
-err := createTables()
+		err := createTables()
 		if err != nil {
 			return err
 		}
@@ -63,6 +63,6 @@ func createTables() error {
 }
 
 func init() {
-initCmd.PersistentFlags().StringVarP(&createTableFilePath, "sql-file-path", "s", "docs/schema/tables.sql", "the sql file path")
+	initCmd.PersistentFlags().StringVarP(&createTableFilePath, "sql-file-path", "s", "docs/schema/tables.sql", "the sql file path")
 	RootCmd.AddCommand(initCmd)
 }

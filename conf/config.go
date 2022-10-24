@@ -2,33 +2,23 @@ package conf
 
 import (
 	"context"
-	"sync"
 	"fmt"
+	"sync"
 	"time"
-	
-"database/sql"
- 	_ "github.com/go-sql-driver/mysql"
 
-
-
-
-
-
+	"database/sql"
+	_ "github.com/go-sql-driver/mysql"
 )
 
 var (
-db *sql.DB
-
+	db *sql.DB
 )
 
 func newConfig() *Config {
 	return &Config{
-		App:     newDefaultAPP(),
-		Log:     newDefaultLog(),
-MySQL:   newDefaultMySQL(),
-
-
-
+		App:   newDefaultAPP(),
+		Log:   newDefaultLog(),
+		MySQL: newDefaultMySQL(),
 	}
 }
 
@@ -36,10 +26,7 @@ MySQL:   newDefaultMySQL(),
 type Config struct {
 	App   *app   `toml:"app"`
 	Log   *log   `toml:"log"`
-MySQL *mysql `toml:"mysql"`
-
-
-
+	MySQL *mysql `toml:"mysql"`
 }
 
 type app struct {
@@ -112,10 +99,6 @@ func newDefaultLog() *log {
 	}
 }
 
-
-
-
-
 type mysql struct {
 	Host        string `toml:"host" env:"MYSQL_HOST"`
 	Port        string `toml:"port" env:"MYSQL_PORT"`
@@ -176,4 +159,3 @@ func (m *mysql) GetDB() (*sql.DB, error) {
 	}
 	return db, nil
 }
-

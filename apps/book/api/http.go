@@ -7,6 +7,7 @@ import (
 	"github.com/infraboard/mcube/http/response"
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
+	"github.com/lifangjunone/cmdb/version"
 
 	"github.com/lifangjunone/cmdb/apps/book"
 )
@@ -31,7 +32,7 @@ func (h *handler) Name() string {
 }
 
 func (h *handler) Version() string {
-	return "v1"
+	return version.ApiVersion
 }
 
 func (h *handler) Registry(ws *restful.WebService) {

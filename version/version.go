@@ -7,6 +7,8 @@ import (
 const (
 	// ServiceName 服务名称
 	ServiceName = "cmdb"
+	ApiVersion  = "v1"
+	Version     = "v0.0.1"
 )
 
 var (

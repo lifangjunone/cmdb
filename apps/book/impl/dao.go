@@ -5,8 +5,6 @@ import (
 	"fmt"
 
 	"github.com/lifangjunone/cmdb/apps/book"
-
-
 )
 
 func (s *service) deleteBook(ctx context.Context, ins *book.Book) error {
@@ -44,4 +42,3 @@ func (s *service) updateBook(ctx context.Context, ins *book.Book) error {
 
 	return nil
 }
-
