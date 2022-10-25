@@ -1,0 +1,227 @@
+syntax = "proto3";
+
+package cmdb.resource;
+option go_package="github.com/lifangjunone/cmdb/apps/resource";
+
+import "github.com/infraboard/mcube/pb/page/page.proto";
+
+service Service{
+  rpc Search (SearchRequest) returns (ResourceSet);
+  rpc QueryTag (QueryTagRequest) returns (TagSet);
+  rpc UpdateTag (UpdateTagRequest) returns (Resource);
+}
+
+message TagSelector {
+  // @gotags: json:"key"
+  string key = 1;
+  // @gotags: json:"operator"
+  string operator =2;
+  // @gotags: json:"values"
+  repeated string values = 3;
+}
+
+message SearchRequest {
+  // optional: 通过　protoc　编译成[指针类型]，意思就是允许为空指针, Proto3 optional label as fields are 'optional' by default
+  // @gotags: json:"page"
+  infraboard.mcube.page.PageRequest page = 1;
+  // @gotags: json:"domain"
+  string domain = 2;
+  // @gotags: json:"namespace"
+  string namespace = 3;
+  // @gotags: json:"env"
+  string env = 4;
+  // @gotags: json:"usage_mode"
+  UsageMode usage_mode = 5;
+  // @gotages: json:"vendor"
+  Vendor vendor = 6;
+  // @gotags: json:"sync_account
+  string sync_account = 7;
+  // @gotags: json:"type"
+  Type type = 8;
+  // @gotags: json:"status"
+  string status = 9;
+  // @gotags: json:"tags"
+  repeated TagSelector tags = 10;
+  // @gotags: json:"with_tags"
+  bool with_tags = 11;
+  // @gotags: json:"keywords"
+  string keywords = 14;
+  // @gotags: json:"exact_match"
+  bool exact_match = 15;
+}
+
+message ResourceSet {
+  // @gotags: json:"total"
+  int64 total = 1;
+  // @gotags: json:"items"
+  repeated Resource items = 2;
+}
+
+message QueryTagRequest {
+  // @gotags: json:"resource_ids"
+  repeated string resource_ids = 1;
+}
+
+message TagSet {
+    // @gotags: json:"total"
+    int64 total = 1;
+    // @gotags: json:"items"
+    repeated Tag items = 2;
+}
+
+message UpdateTagRequest {
+  // @gotags: json:"id" validate:"required"
+  string id = 1;
+  // @gotags: json:"action"
+  UpdateAction action = 2;
+  // @gotags json:"tags" validate:"required"
+  repeated Tag tags = 3;
+}
+
+// Resource 固有属性，　独有属性
+message Resource {
+  // 资源元数据信息, 固有属性, 不可变化
+  // @gotags: json:"base"
+  Base base = 1;
+  // 资源信息, 通用属性,可以变化
+  // @gotags: json:"information"
+  Information information = 2;
+  // 资源释放计划
+  // @gotags json:"release_plan"
+  // ReleasePlan release_plan = 3;
+}
+
+enum UpdateAction {
+  // add
+  ADD = 0;
+  // delete
+  REMOVE = 1;
+}
+
+enum Vendor {
+    ALIYUN = 0;
+    TENCENT = 1;
+    HUAWEI = 2;
+    VSPHERE = 3;
+    AMAZON = 4;
+}
+
+enum Type {
+  HOST = 0;
+  ROS = 1;
+  // ... other resource
+  BILL = 99;
+}
+
+enum UsageMode {
+  // 共享使用
+  SHARED = 0;
+  // 独占使用
+  MONOPOLY = 1;
+}
+
+enum TagType {
+    // 用户自定义标签，容许用户修改
+    USER = 0;
+    // 第三方定义的标签
+    THIRD =1;
+    // 系统定义的标签，禁止用户修改，表示被系统所引用
+    SYSTEM =2;
+}
+
+message SharePolicy {
+  // @gotags: json:"tag_key"
+  string tag_key = 1;
+  // @gotags: json:"tag_values"
+  repeated string tag_values = 2;
+}
+
+message Base {
+ // @gotags: json:"id" validate:"required"
+ string id = 1;
+ // @gotags: json:"sync_at"
+  int64 sync_at = 2;
+  // @gotags: json:"secret_id"
+  string secret_id = 3;
+  // @gotags: json:"vendor"
+  Vendor vendor = 4;
+  // @gotags: json:"resource_type"
+  Type resource_type = 5;
+  // @gotags: json:"region"
+  string region = 6;
+  // @gotags: json:"zone"
+  string zone = 7;
+  // @gotags: json:"create_at"
+  int64 create_at = 8;
+  // @gotags: json:"resource_hash"
+  string resource_hash = 10;
+  // @gotags: json:"describe_hash"
+  string describe_hash = 11;
+  // @gotags: json:"resource_hash_changed, omitempty"
+  bool resource_hash_changed = 12;
+  // @gotags: json:"describe_hash_changed, omitempty"
+  bool describe_hash_changed = 13;
+  // @gotags: json:"namespace"
+  string namespace = 14;
+  // @gotags: json:"env"
+  string env = 15;
+  // @gotags: json:"usage_mode"
+  UsageMode usage_mode = 16;
+  // @gotags: json:"shared_policy"
+  SharePolicy share_policy = 17;
+  // @gotags: json:"domain"
+  string domain = 18;
+}
+
+message Tag {
+  // @gotags: json:"resource_id"
+  string resource_id = 1;
+  // @gotags: json:"type"
+  TagType type = 2;
+  // @gotags: json:"key" validate:"Lte=255,required"
+  string key = 3;
+  // @gotags: json:"value" validate:"Lte=255,required"
+  string value = 4;
+  // @gotags: json:"describe"
+  string describe = 5;
+  // @gotags: json:"weight"
+  int64 weight = 6;
+  // @gotags: json:"is_cost"
+  bool is_cost = 7;
+  // @gotags: json:"hidden"
+  bool hidden = 8;
+  // @gotags: json:"meta"
+  map<string, string> meta = 15;
+}
+
+// Information 通用信息，用于快速检索资源
+message Information {
+    // @gotags: json:"expire_at"
+    int64 expire_at = 1;
+    // @gotags: json:"category"
+    string category = 2;
+    // @gotags: json:"type"
+    string type = 3;
+    // @gotags: json:"name"
+    string name = 4;
+    // @gotags: json:"description"
+    string description = 5;
+    // @gotags: json:"status"
+    string status = 6;
+    // @gotags: json:"tags"
+    repeated Tag tags = 7;
+    // @gotags: json:"update_at"
+    int64 update_at = 8;
+    // @gotags: json:"sync_account"
+    string sync_account = 9;
+    // @gotags: json:"public_ip"
+    repeated string public_ip = 10;
+    // @gotags: json:"private_ip"
+    repeated string private_ip = 11;
+    // @gotags: json:"pay_type"
+    string pay_type = 12;
+}
+
+message ReleasePlan {
+
+}
