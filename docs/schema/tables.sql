@@ -10,3 +10,55 @@ CREATE TABLE IF NOT EXISTS `books` (
   KEY `idx_name` (`name`) USING BTREE COMMENT '用于书名搜索',
   KEY `idx_author` (`author`) USING BTREE COMMENT '用于作者搜索'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `resource` (
+    `id` char(64) NOT NULL COMMENT '对象Id',
+    `resource_type` tinyint(2) NOT NULL,
+    `vendor` tinyint(1) NOT NULL,
+    `region` varchar(64) NOT NULL,
+    `zone` varchar(64) NOT NULL,
+    `create_at` bigint NOT NULL COMMENT '创建时间(13位时间戳)',
+    `expire_at` bigint NOT NULL COMMENT '创建时间(13位时间戳)',
+    `category`  varchar(64) NOT NULL,
+    `type` varchar(120) NOT NULL,
+    `name` varchar(255) NOT NULL,
+    `description` varchar(512) DEFAULT NULL,
+    `status` varchar(255) NOT NULL,
+    `update_at` bigint(13) DEFAULT NULL COMMENT '更新时间',
+    `sync_at` bigint(13) DEFAULT NULL COMMENT '更新时间',
+    `sync_account` varchar(255) DEFAULT NULL,
+    `public_ip` varchar(64) DEFAULT NULL,
+    `private_ip` varchar(64) DEFAULT NULL,
+    `pay_type` varchar(255) DEFAULT NULL,
+    `describe_hash` varchar(255) NOT NULL,
+    `resource_hash` varchar(255) NOT NULL,
+    `secret_id` varchar(64) NOT NULL,
+    `domain` varchar(255) NOT NULL,
+    `namespace` varchar(255) NOT NULL,
+    `env` varchar(255) NOT NULL,
+    `usage_mode` tinyint(2) NOT NULL,
+    PRIMARY KEY (`id`) USING BTREE,
+    KEY `idx_name` (`name`) USING BTREE,
+    KEY `idx_status` (`status`) USING BTREE,
+    KEY `idx_private_ip` (`private_ip`) USING BTREE,
+    KEY `idx_public_ip` (`public_ip`) USING BTREE,
+    KEY `idx_domain` (`domain`) USING HASH,
+    KEY `idx_namespace` (`namespace`) USING HASH,
+    KEY `idx_env` (`env`) USING HASH
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `resource_tag` (
+    `id` char(64) NOT NULL,
+    `t_key` varchar(255) NOT NULL,
+    `t_value` varchar(255) NOT NULL,
+    `description` varchar(255) NOT NULL,
+    `resource_id` varchar(255) CHARACTER SET latin1 NOT NULL,
+    `weight` int(11) NOT NULL,
+    `type` tinyint(4) NOT NULL,
+    `create_at` bigint NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_id` (`t_key`, `t_value`, `resource_id`),
+    KEY `idx_t_key` (`t_key`) USING HASH,
+    KEY `idx_t_value` (`t_value`) USING HASH,
+    KEY `idx_resource_id` (`resource_id`) USING HASH
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
