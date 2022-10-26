@@ -1,14 +1,12 @@
 package protocol
 
 import (
-	"net"
-
-	"google.golang.org/grpc"
-
-	"github.com/infraboard/mcube/app"
-	"github.com/infraboard/mcube/grpc/middleware/recovery"
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
+	logger_mid "github.com/lifangjunone/cmdb/middleware/logger"
+	"github.com/lifangjunone/cmdb/service_registry"
+	"google.golang.org/grpc"
+	"net"
 
 	"github.com/lifangjunone/cmdb/conf"
 )
@@ -17,7 +15,7 @@ import (
 func NewGRPCService() *GRPCService {
 	log := zap.L().Named("GRPC Service")
 
-	rc := recovery.NewInterceptor(recovery.NewZapRecoveryHandler())
+	rc := logger_mid.NewInterceptor(logger_mid.NewZapRecoveryHandler())
 	grpcServer := grpc.NewServer(grpc.ChainUnaryInterceptor(
 		rc.UnaryServerInterceptor(),
 	))
@@ -39,7 +37,7 @@ type GRPCService struct {
 // Start 启动GRPC服务
 func (s *GRPCService) Start() {
 	// 装载所有GRPC服务
-	app.LoadGrpcApp(s.svr)
+	service_registry.LoadGrpcApp(s.svr)
 
 	// 启动HTTP服务
 	lis, err := net.Listen("tcp", s.c.App.GRPC.Addr())

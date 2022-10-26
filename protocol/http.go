@@ -11,10 +11,10 @@ import (
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
 
-	"github.com/infraboard/mcube/app"
-
 	"github.com/lifangjunone/cmdb/conf"
 	"github.com/lifangjunone/cmdb/swagger"
+
+	"github.com/lifangjunone/cmdb/service_registry"
 )
 
 // NewHTTPService 构建函数
@@ -67,7 +67,7 @@ func (s *HTTPService) PathPrefix() string {
 // Start 启动服务
 func (s *HTTPService) Start() error {
 	// 装置子服务路由
-	app.LoadRESTfulApp(s.PathPrefix(), s.r)
+	service_registry.LoadRESTFulApp(s.PathPrefix(), s.r)
 
 	// API Doc
 	config := restfulspec.Config{
