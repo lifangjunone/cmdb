@@ -31,13 +31,13 @@ message SearchRequest {
   // @gotags: json:"env"
   string env = 4;
   // @gotags: json:"usage_mode"
-  UsageMode usage_mode = 5;
+  optional UsageMode usage_mode = 5;
   // @gotages: json:"vendor"
-  Vendor vendor = 6;
+  optional Vendor vendor = 6;
   // @gotags: json:"sync_account
   string sync_account = 7;
   // @gotags: json:"type"
-  Type type = 8;
+  optional Type type = 8;
   // @gotags: json:"status"
   string status = 9;
   // @gotags: json:"tags"
