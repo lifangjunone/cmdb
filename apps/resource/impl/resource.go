@@ -102,11 +102,11 @@ func (s *service) Search(ctx context.Context, req *resource.SearchRequest) (*res
 	// 补充资源的标签
 	// 为什么 不在上个SQL，直接把Tag查出来喃?
 	if req.WithTags {
-		//tags, err := QueryTag(ctx, s.db, set.ResourceIds())
-		//if err != nil {
-		//	return nil, err
-		//}
-		//set.UpdateTag(tags)
+		tags, err := QueryTag(ctx, s.db, set.ResourceIds())
+		if err != nil {
+			return nil, err
+		}
+		set.UpdateTag(tags)
 	}
 	return set, nil
 }

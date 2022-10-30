@@ -64,6 +64,28 @@ func (x *ResourceSet) Add(item *Resource) {
 	x.Items = append(x.Items, item)
 }
 
+func (x *ResourceSet) ResourceIds() (ids []string) {
+	for i := range x.Items {
+		ids = append(ids, x.Items[i].Base.Id)
+	}
+
+	return
+}
+
+func (x *ResourceSet) UpdateTag(tags []*Tag) {
+	for i := range tags {
+		for j := range x.Items {
+			if x.Items[j].Base.Id == tags[i].ResourceId {
+				x.Items[j].Information.AddTag(tags[i])
+			}
+		}
+	}
+}
+
+func (x *Information) AddTag(tag *Tag) {
+	x.Tags = append(x.Tags, tag)
+}
+
 func NewDefaultTag() *Tag {
 	return &Tag{
 		Type:   TagType_USER,
