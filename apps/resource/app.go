@@ -3,6 +3,7 @@ package resource
 import (
 	"fmt"
 	"github.com/infraboard/mcube/http/request"
+	"github.com/lifangjunone/cmdb/utils"
 	"net/http"
 	"strings"
 )
@@ -205,4 +206,16 @@ func NewSearchRequestFromHTTP(r *http.Request) (*SearchRequest, error) {
 	}
 
 	return req, nil
+}
+
+func (x *Information) Hash() string {
+	return utils.Hash(x)
+}
+
+func (i *Information) PrivateIPToString() string {
+	return strings.Join(i.PrivateIp, ",")
+}
+
+func (i *Information) PublicIPToString() string {
+	return strings.Join(i.PublicIp, ",")
 }

@@ -13,16 +13,16 @@ import (
 )
 
 var (
-	svc = &Service{}
+	svc = &service{}
 )
 
-type Service struct {
+type service struct {
 	db  *sql.DB
 	log logger.Logger
 	host.UnimplementedServiceServer
 }
 
-func (s *Service) Config() error {
+func (s *service) Config() error {
 	db, err := conf.C().MySQL.GetDB()
 	if err != nil {
 		return err
@@ -32,11 +32,11 @@ func (s *Service) Config() error {
 	return nil
 }
 
-func (s *Service) Name() string {
+func (s *service) Name() string {
 	return host.AppName
 }
 
-func (s *Service) Registry(server *grpc.Server) {
+func (s *service) Registry(server *grpc.Server) {
 	host.RegisterServiceServer(server, svc)
 }
 
