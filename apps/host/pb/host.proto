@@ -4,7 +4,7 @@ package cmdb.host;
 
 option go_package="github.com/lifangjunone/cmdb/apps/host";
 
-import "github.com/lifangjunone/cmdb/apps/resource/pb/resource.proto";
+import "apps/resource/pb/resource.proto";
 import "github.com/infraboard/mcube/pb/page/page.proto";
 import "github.com/infraboard/mcube/pb/request/request.proto";
 
