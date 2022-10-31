@@ -8,7 +8,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/infraboard/mcube/app"
+	"github.com/lifangjunone/cmdb/service_registry"
 	"github.com/spf13/cobra"
 
 	"github.com/infraboard/mcube/logger"
@@ -38,7 +38,7 @@ var serviceCmd = &cobra.Command{
 		}
 
 		// 初始化全局app
-		if err := app.InitAllApp(); err != nil {
+		if err := service_registry.InitAllApp(); err != nil {
 			return err
 		}
 
@@ -88,11 +88,8 @@ type service struct {
 }
 
 func (s *service) start() error {
-	s.log.Infof("loaded grpc app: %s", app.LoadedGrpcApp())
-	s.log.Infof("loaded http app: %s", app.LoadedRESTfulApp())
-
-	s.log.Infof("loaded internal app: %s", app.LoadedInternalApp())
-
+	s.log.Infof("loaded grpc app: %s", service_registry.LoadedGrpcApp())
+	s.log.Infof("loaded http app: %s", service_registry.LoadedRESTFulApp())
 	go s.grpc.Start()
 	return s.http.Start()
 }

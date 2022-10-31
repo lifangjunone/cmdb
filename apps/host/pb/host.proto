@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package cmdb.host;
+
+option go_package="github.com/lifangjunone/cmdb/apps/host";
+
+import "github.com/lifangjunone/cmdb/apps/resource/pb/resource.proto";
+import "github.com/infraboard/mcube/pb/page/page.proto";
+import "github.com/infraboard/mcube/pb/request/request.proto";
+
+service Service {
+  // SyncHost 同步云商的主机资源
+  rpc SyncHost(Host) returns(Host);
+  // QueryHost 查询本地同步之后的主机资源清单
+  rpc QueryHost(QueryHostRequest) returns(HostSet);
+  // DescribeHost 查询主机详细信息
+  rpc DescribeHost(DescribeHostRequest) returns(Host);
+  // UpdateHost 更新主机信息， 同步更新云商资源信息
+  rpc UpdateHost(UpdateHostRequest) returns(Host);
+  // ReleaseHost 释放主机，　按计划释放后，　信息会保留一段时间
+  rpc ReleaseHost(ReleaseHostRequest) returns(Host);
+}
+
+message Host {
+  // resource 通用属性, 将通用信息存放在resource表中
+  // @gotags: json:"base"
+  resource.Base base = 1;
+  // @gotags: json:"information"
+  resource.Information information = 2;
+  // describe 独有属性, 将host本身独有的属性存放在describe表中
+  // @gotags: json:"describe"
+  Describe describe = 3;
+}
+
+message Describe {
+  // @gotags: json:"cpu"
+  int64 cpu = 1;
+  // @gotags: json:"memory"
+  int64 memory = 2;
+  // @gotags: json:"gpu_amount"
+  int32 gpu_amount = 3;
+  // @gotags: json:"gpu_spec"
+  string gpu_spec = 4;
+  // @gotags: json:"os_type"
+  string os_type = 5;
+  // @gotags: json:"os_name"
+  string os_name = 6;
+  // @gotags: json:"serial_number"
+  string serial_number = 7;
+  // @gotags: json:"image_id "
+  string image_id = 8;
+  // @gotags: json:"internet_max_bandwidth_out "
+  int64 internet_max_bandwidth_out = 9;
+  // @gotags: json:"internet_max_bandwidth_in "
+  int64 internet_max_bandwidth_in = 10;
+  // @gotags: json:"key_pair_name "
+  repeated string key_pair_name = 11;
+  // @gotags: json:"security_groups "
+  repeated string security_groups = 12;
+  // @gotags: json:"extra "
+  map<string, string> extra = 13;
+}
+
+message QueryHostRequest {
+  // @gotags: json:"page "
+  infraboard.mcube.page.PageRequest page = 1;
+  // @gotags: json:"keywords "
+  string keywords = 2;
+}
+
+message HostSet {
+  // @gotags: json:"total"
+  int64 total = 1;
+  // @gotags: json:"items "
+  repeated Host items = 2;
+}
+
+enum  DescribeBy {
+  HOST_ID = 0;
+}
+
+message DescribeHostRequest {
+  // @gotags: json:"describe_by"
+  DescribeBy describe_by = 1;
+  // @gotags: json:value" validate:"required"
+  string value = 2;
+}
+
+message UpdateHostData {
+  // @gotags: json:"information"
+  resource.Information information = 1;
+  // @gotags: json:"describe "
+  Describe describe = 2;
+}
+
+message UpdateHostRequest {
+  // gotags: json:"id" validate:"required"
+  string id = 1;
+  // gotags: json:"update_mode"
+  infraboard.mcube.request.UpdateMode update_mode = 2;
+  // gotags: json:"update_host_data "
+  UpdateHostData update_host_data = 3;
+}
+
+message ReleaseHostRequest {
+  string id = 1;
+  resource.ReleasePlan release_plan = 2;
+}

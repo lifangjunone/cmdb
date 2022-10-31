@@ -222,6 +222,24 @@ message Information {
     string pay_type = 12;
 }
 
+// ReleasePlan 资源释放计划
 message ReleasePlan {
-
+  // 释放原因
+  // @gotags: json:"reason"
+  string reason = 1;
+  // 是否立即释放
+  // @gotags: json:"immediately"
+  bool immediately = 2;
+  // 计划时间
+  // @gotags: json:"plan_at"
+  int64 plan_at = 3;
+  // 执行时间
+  // @gotags: json:"exec_at"
+  int64 exec_at = 4;
+  // 释放前 提前几天通知, 过期后 云商会自动释放的也需要提前通知
+  // @gotags: json:"notice_before_days"
+  int64 notice_before_days = 5;
+  // 资源释放后, 什么时候销毁该数据
+  // @gotags: json:"destory_at"
+  int64 destory_at = 6;
 }

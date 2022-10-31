@@ -62,3 +62,20 @@ CREATE TABLE IF NOT EXISTS `resource_tag` (
     KEY `idx_t_value` (`t_value`) USING HASH,
     KEY `idx_resource_id` (`resource_id`) USING HASH
     ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `resource_host` (
+    `resource_id` varchar(64) CHARACTER SET latin1 NOT NULL COMMENT '关联的资源ID',
+    `cpu` tinyint(4) NOT NULL COMMENT 'cpu核算',
+    `memory` int(13) NOT NULL COMMENT '内存大小',
+    `gpu_amount` tinyint(4) DEFAULT NULL COMMENT 'gpu核数',
+    `gpu_spec` varchar(255) CHARACTER SET latin1 DEFAULT NULL COMMENT 'gpu规格',
+    `os_type` varchar(255) CHARACTER SET latin1 DEFAULT NULL COMMENT '操作系统类型',
+    `os_name` varchar(255) CHARACTER SET utf8mb4 DEFAULT NULL,
+    `serial_number` varchar(120) CHARACTER SET latin1 DEFAULT NULL COMMENT '系统序列号',
+    `image_id` char(64) CHARACTER SET latin1 DEFAULT NULL,
+    `internet_max_bandwidth_out` int(10) DEFAULT NULL,
+    `internet_max_bandwidth_in` int(10) DEFAULT NULL,
+    `key_pair_name` varchar(255) DEFAULT NULL,
+    `security_groups` varchar(255) DEFAULT NULL,
+    PRIMARY KEY (`resource_id`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
