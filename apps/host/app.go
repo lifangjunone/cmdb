@@ -1,7 +1,10 @@
 package host
 
 import (
+	"github.com/infraboard/mcube/http/request"
+	"github.com/lifangjunone/cmdb/apps/resource"
 	"github.com/lifangjunone/cmdb/utils"
+	"net/http"
 	"strings"
 	"time"
 )
@@ -32,12 +35,12 @@ func (x *Host) GenHash() error {
 	return nil
 }
 
-func (d *Describe) KeyPairNameToString() string {
-	return strings.Join(d.KeyPairName, ",")
+func (x *Describe) KeyPairNameToString() string {
+	return strings.Join(x.KeyPairName, ",")
 }
 
-func (d *Describe) SecurityGroupsToString() string {
-	return strings.Join(d.SecurityGroups, ",")
+func (x *Describe) SecurityGroupsToString() string {
+	return strings.Join(x.SecurityGroups, ",")
 }
 
 func (h *Host) Put(req *UpdateHostData) {
@@ -53,5 +56,57 @@ func (h *Host) Put(req *UpdateHostData) {
 	}
 	if h.Base.DescribeHash != oldDH {
 		h.Base.DescribeHashChanged = true
+	}
+}
+
+func NewHostSet() *HostSet {
+	return &HostSet{
+		Items: []*Host{},
+	}
+}
+
+func (x *HostSet) Add(item *Host) {
+	x.Items = append(x.Items, item)
+	return
+}
+
+func NewDefaultHost() *Host {
+	return &Host{
+		Base: &resource.Base{
+			ResourceType: resource.Type_HOST,
+		},
+		Information: &resource.Information{},
+		Describe:    &Describe{},
+	}
+}
+
+func (x *Describe) LoadKeyPairNameString(str string) {
+	if str != "" {
+		x.KeyPairName = strings.Split(str, ",")
+	}
+
+}
+
+func (x *Describe) LoadSecurityGroupsString(str string) {
+	if str != "" {
+		x.SecurityGroups = strings.Split(str, ",")
+	}
+}
+
+func NewQueryHostRequestFromHttp(r *http.Request) *QueryHostRequest {
+	qs := r.URL.Query()
+	page := request.NewPageRequestFromHTTP(r)
+	kw := qs.Get("keywords")
+
+	return &QueryHostRequest{
+		Page:     page,
+		Keywords: kw,
+	}
+}
+
+func (x *DescribeHostRequest) Where() (string, interface{}) {
+	switch x.DescribeBy {
+	default:
+		return "r.id = ?", x.Value
 	}
 }
