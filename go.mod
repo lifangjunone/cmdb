@@ -17,6 +17,9 @@ require (
 	github.com/rs/xid v1.4.0
 	github.com/spf13/cobra v1.6.0
 	github.com/stretchr/testify v1.8.0
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.527
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.527
+	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sts v1.0.527
 	go.uber.org/zap v1.20.0
 	google.golang.org/grpc v1.50.1
 	google.golang.org/protobuf v1.28.1
@@ -46,9 +49,6 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common v1.0.527 // indirect
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm v1.0.527 // indirect
-	github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/sts v1.0.527 // indirect
 	github.com/ugorji/go/codec v1.2.6 // indirect
 	go.mongodb.org/mongo-driver v1.8.3 // indirect
 	go.uber.org/atomic v1.7.0 // indirect

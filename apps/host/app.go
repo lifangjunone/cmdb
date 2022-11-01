@@ -70,6 +70,10 @@ func (x *HostSet) Add(item *Host) {
 	return
 }
 
+func (x *HostSet) Length() int64 {
+	return int64(len(x.Items))
+}
+
 func NewDefaultHost() *Host {
 	return &Host{
 		Base: &resource.Base{
@@ -109,4 +113,9 @@ func (x *DescribeHostRequest) Where() (string, interface{}) {
 	default:
 		return "r.id = ?", x.Value
 	}
+}
+
+type Pager interface {
+	Next() bool
+	Scan(set *HostSet) error
 }
