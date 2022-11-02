@@ -35,9 +35,9 @@ func TestPagerQuery(t *testing.T) {
 
 func init() {
 	err := connectivity.LoadClientFromEnv()
-	id := "AKIDJXiojFcmkV4TggT4hHi3GIF5ri0HSdgY"
-	key := "qY7UiquumV4Vs6B8uZ6Vkq49A4qV2Oc2"
-	region := "ap-beijing"
+	id := "xxx"
+	key := "xxx"
+	region := "xxx"
 	connectivity.SetClient(connectivity.NewTencentCloudClient(id, key, region))
 	if err != nil {
 		panic(err)
