@@ -1,6 +1,7 @@
 package host
 
 import (
+	"context"
 	"github.com/infraboard/mcube/http/request"
 	"github.com/lifangjunone/cmdb/apps/resource"
 	"github.com/lifangjunone/cmdb/utils"
@@ -117,5 +118,6 @@ func (x *DescribeHostRequest) Where() (string, interface{}) {
 
 type Pager interface {
 	Next() bool
-	Scan(set *HostSet) error
+	Scan(ctx context.Context, set *HostSet) error
+	SetPageSize(ps int64)
 }
