@@ -39,6 +39,7 @@ func (p *pager) offset() *int64 {
 
 func (p *pager) nextReq() *cvm.DescribeInstancesRequest {
 	p.req.Offset = p.offset()
+	p.req.Limit = &p.pageSize
 	return p.req
 }
 
@@ -59,6 +60,7 @@ func (p *pager) Scan(ctx context.Context, set *host.HostSet) error {
 	if hs.Length() < p.pageSize {
 		p.hasNext = false
 	}
+	*set = *hs.Clone()
 	p.pageNumber++
 	return nil
 }

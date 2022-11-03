@@ -2,6 +2,7 @@ package host
 
 import (
 	"context"
+	"github.com/golang/protobuf/proto"
 	"github.com/infraboard/mcube/http/request"
 	"github.com/lifangjunone/cmdb/apps/resource"
 	"github.com/lifangjunone/cmdb/utils"
@@ -83,6 +84,10 @@ func NewDefaultHost() *Host {
 		Information: &resource.Information{},
 		Describe:    &Describe{},
 	}
+}
+
+func (x *HostSet) Clone() *HostSet {
+	return proto.Clone(x).(*HostSet)
 }
 
 func (x *Describe) LoadKeyPairNameString(str string) {
