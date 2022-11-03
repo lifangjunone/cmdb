@@ -2,11 +2,13 @@ package cvm
 
 import (
 	"context"
+	"github.com/infraboard/mcube/flowcontrol/tokenbucket"
 	"github.com/infraboard/mcube/logger"
 	"github.com/infraboard/mcube/logger/zap"
 	"github.com/lifangjunone/cmdb/apps/host"
 	cvm "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm/v20170312"
 	tx_cvm "github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/cvm/v20170312"
+	"time"
 )
 
 type pager struct {
@@ -16,6 +18,7 @@ type pager struct {
 	pageNumber int64
 	pageSize   int64
 	log        logger.Logger
+	tb         *tokenbucket.Bucket
 }
 
 func newPager(op *CVMOperator) host.Pager {
@@ -25,6 +28,7 @@ func newPager(op *CVMOperator) host.Pager {
 		pageNumber: 1,
 		pageSize:   20,
 		log:        zap.L().Named("CVM"),
+		tb:         tokenbucket.NewBucket(3*time.Second, 3),
 	}
 	p.req = tx_cvm.NewDescribeInstancesRequest()
 	p.req.Limit = &p.pageSize
@@ -38,6 +42,7 @@ func (p *pager) offset() *int64 {
 }
 
 func (p *pager) nextReq() *cvm.DescribeInstancesRequest {
+	p.tb.Wait(1)
 	p.req.Offset = p.offset()
 	p.req.Limit = &p.pageSize
 	return p.req
