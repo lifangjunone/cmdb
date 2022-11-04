@@ -14,6 +14,10 @@ var (
 	db *sql.DB
 )
 
+const (
+	CIPHER_TEXT_PREFIX = "@ciphered@"
+)
+
 func newConfig() *Config {
 	return &Config{
 		App:   newDefaultAPP(),

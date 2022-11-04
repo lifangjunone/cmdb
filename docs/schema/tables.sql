@@ -79,3 +79,34 @@ CREATE TABLE IF NOT EXISTS `resource_host` (
     `security_groups` varchar(255) DEFAULT NULL,
     PRIMARY KEY (`resource_id`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE IF NOT EXISTS `secret` (
+    `id` varchar(64) NOT NULL COMMENT '凭证Id',
+    `create_at` bigint(13) NOT NULL COMMENT '创建时间',
+    `description` varchar(255) NOT NULL COMMENT '凭证描述',
+    `vendor` tinyint(1) NOT NULL COMMENT '资源提供商',
+    `address` varchar(255)  NOT NULL COMMENT '体验提供方访问地址',
+    `allow_regions` text  NOT NULL COMMENT '允许同步的Region列表',
+    `crendential_type` tinyint(1) NOT NULL COMMENT '凭证类型',
+    `api_key` varchar(255) NOT NULL COMMENT '凭证key',
+    `api_secret` text  NOT NULL COMMENT '凭证secret',
+    `request_rate` int(11) NOT NULL COMMENT '请求速率',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_key` (`api_key`) USING BTREE
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='资源提供商同步凭证管理';
+
+CREATE TABLE IF NOT EXISTS `task` (
+    `id` varchar(64) NOT NULL COMMENT '任务Id',
+    `region` varchar(64) NOT NULL COMMENT '资源所属Region',
+    `resource_type` tinyint(1) NOT NULL COMMENT '资源类型',
+    `secret_id` varchar(64) NOT NULL COMMENT '用于操作资源的凭证Id',
+    `secret_desc` text NOT NULL COMMENT '凭证描述',
+    `timeout` int(11) NOT NULL COMMENT '任务超时时间',
+    `status` tinyint(1) NOT NULL COMMENT '任务当前状态',
+    `message` text NOT NULL COMMENT '任务失败相关信息',
+    `start_at` bigint(20) NOT NULL COMMENT '任务开始时间',
+    `end_at` bigint(20) NOT NULL COMMENT '任务结束时间',
+    `total_succeed` int(11) NOT NULL COMMENT '总共操作成功的资源数量',
+    `total_failed` int(11) NOT NULL COMMENT '总共操作失败的资源数量',
+    PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='资源操作任务管理';

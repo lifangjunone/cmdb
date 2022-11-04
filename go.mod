@@ -11,6 +11,7 @@ require (
 	github.com/go-openapi/spec v0.20.7
 	github.com/go-playground/validator/v10 v10.11.1
 	github.com/go-sql-driver/mysql v1.6.0
+	github.com/golang/protobuf v1.5.2
 	github.com/imdario/mergo v0.3.13
 	github.com/infraboard/keyauth v0.8.1
 	github.com/infraboard/mcube v1.9.0
@@ -36,7 +37,6 @@ require (
 	github.com/go-playground/locales v0.14.0 // indirect
 	github.com/go-playground/universal-translator v0.18.0 // indirect
 	github.com/go-stack/stack v1.8.0 // indirect
-	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/inconshreveable/mousetrap v1.0.1 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
