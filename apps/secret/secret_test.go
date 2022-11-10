@@ -22,6 +22,20 @@ func TestDescribeSecret(t *testing.T) {
 	t.Log(ss)
 }
 
+func TestCreateSecret(t *testing.T) {
+	req := secret.NewCreateSecretRequest()
+	req.ApiKey = "access id"
+	req.ApiSecret = "access secret"
+	req.Vendor = 0
+	req.AllowRegions = []string{"beijing", "guangzhou"}
+	req.Description = "tencent sync auth"
+	st, err := ins.CreateSecret(context.Background(), req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(st)
+}
+
 func init() {
 	err := conf.LoadConfigFromToml("../../etc/config.toml")
 	if err != nil {
