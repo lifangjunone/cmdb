@@ -14,8 +14,16 @@ var (
 	ins secret.ServiceServer
 )
 
-func TestDescribeSecret(t *testing.T) {
+func TestQuerySecret(t *testing.T) {
 	ss, err := ins.QuerySecret(context.Background(), secret.NewQuerySecretRequest())
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(ss)
+}
+
+func TestDescribeSecret(t *testing.T) {
+	ss, err := ins.DescribeSecret(context.Background(), secret.NewDescribeSecretRequest("acdmiqankobjr0cngbufg"))
 	if err != nil {
 		t.Fatal(err)
 	}
