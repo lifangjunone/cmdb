@@ -5,4 +5,5 @@ import (
 	_ "github.com/lifangjunone/cmdb/apps/book/api"
 	_ "github.com/lifangjunone/cmdb/apps/host/api"
 	_ "github.com/lifangjunone/cmdb/apps/resource/api"
+	_ "github.com/lifangjunone/cmdb/apps/secret"
 )

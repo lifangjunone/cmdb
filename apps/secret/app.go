@@ -81,6 +81,13 @@ func NewDeleteSecretRequestWithID(id string) *DeleteSecretRequest {
 	}
 }
 
+func NewQuerySecretRequest() *QuerySecretRequest {
+	return &QuerySecretRequest{
+		Page:     request.NewDefaultPageRequest(),
+		Keywords: "",
+	}
+}
+
 func (x *CreateSecretRequest) EncryptAPISecret(key string) error {
 	// 判断文本是否已经加密
 	if strings.HasPrefix(x.ApiSecret, conf.CIPHER_TEXT_PREFIX) {
