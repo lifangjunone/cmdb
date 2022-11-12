@@ -1,0 +1,10 @@
+syntax = "proto3";
+
+package cmdb.page;
+option go_package = "github.com/lifangjunone/cmdb/common/pb/page";
+
+message PageRequest {
+  uint64 page_size = 1;
+  uint64 page_number = 2;
+  int64 offset = 3;
+}

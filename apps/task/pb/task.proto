@@ -1,0 +1,115 @@
+syntax = "proto3";
+
+package cmdb.task;
+option go_package = "github.com/lifangjunone/cmdb/apps/task";
+
+import "apps/resource/pb/resource.proto";
+import "common/pb/page/page.proto";
+
+service Service {
+  rpc CreateTask(CreateTaskRequst) returns(Task);
+  rpc QueryTask(QueryTaskRequest) returns(TaskSet);
+  rpc DescribeTask(DescribeTaskRequest) returns(Task);
+}
+
+// 任务类型
+enum Type {
+  // 资源同步任务
+  RESOURCE_SYNC = 0;
+  // 资源释放任务
+  RESOURCE_RELEASE = 1;
+}
+
+// 任务运行阶段
+enum Stage {
+  PENDING = 0;
+  RUNNING = 1;
+  SUCCESS = 2;
+  FAILED = 3;
+  WARNING = 4;
+}
+
+message TaskSet {
+  // @gotags: json:"total"
+  int64 total = 1;
+  // @gotags: json:"items"
+  repeated Task items = 2;
+}
+
+// Task 同个区域的同一种资源一次只能有1个task run
+message Task {
+  // 任务id
+  // @gotags: json:"id"
+  string id = 1;
+  // secret
+  // @gotags: json:"secret_description"
+  string secret_description = 2;
+  // 任务描述
+  // @gotags: json:"data"
+  CreateTaskRequst data = 3;
+  // 任务状态
+  // @gotags: json:"status"
+  Status status = 4;
+}
+
+message CreateTaskRequst {
+  // 任务类型
+  // @gotags: json:"type"
+  Type type = 1;
+  // 测试运行
+  // @gotags: json:"dry_run"
+  bool dry_run = 2;
+  // 任务使用的云商凭证Id
+  // @gotags: json:"secret_id" validate:"required,lte=100"
+  string secret_id = 3;
+  // 任务操作的资源类型
+  // @gotags: json:"resource_type"
+  resource.Type resource_type = 4;
+  // 通知资源的Region
+  // @gotags: json:"region"
+  string region = 5;
+  // 额外的一些参数
+  // @gotags: json:"params"
+  map<string,string> params = 6;
+  // 任务执行的超时时间, 单位时秒
+  // @gotags: json:"timeout"
+  int64 timeout = 7;
+}
+
+message Status {
+  // 任务状态
+  // @gotags: json:"stage"
+  Stage stage = 1;
+  // 失败时的异常信息
+  // @gotags: json:"message"
+  string message = 2;
+  // 开始同步的时间
+  // @gotags: json:"start_at"
+  int64 start_at = 3;
+  // 同步结束时间
+  // @gotags: json:"end_at"
+  int64 end_at = 4;
+  // 成功的条数
+  // @gotags: json:"total_succeed"
+  int64 total_succeed = 5;
+  // 失败的条数
+  // @gotags: json:"total_failed"
+  int64 total_failed = 6;
+}
+
+message QueryTaskRequest {
+  // 分页参数
+  // @gotags: json:"page"
+  page.PageRequest page = 1;
+  // 更加资源类型来过滤任务
+  // @gotags: json:"resource_type"
+  resource.Type resource_type = 3;
+  // @gotags: json:"keywords"
+  string keywords = 4;
+}
+
+message DescribeTaskRequest {
+  // Task id
+  // @gotags: json:"id" validate:"required"
+  string id = 1;
+}
