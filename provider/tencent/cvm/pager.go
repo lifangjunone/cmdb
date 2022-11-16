@@ -36,6 +36,22 @@ func newPager(op *CVMOperator) host.Pager {
 	return p
 }
 
+func NewPagger(rate float64, op *CVMOperator) host.Pager {
+	p := &pager{
+		op:         op,
+		hasNext:    true,
+		pageNumber: 1,
+		pageSize:   20,
+		log:        zap.L().Named("CVM"),
+		tb:         tokenbucket.NewBucketWithRate(rate, 3),
+	}
+
+	p.req = tx_cvm.NewDescribeInstancesRequest()
+	p.req.Limit = &p.pageSize
+	p.req.Offset = p.offset()
+	return p
+}
+
 func (p *pager) offset() *int64 {
 	os := (p.pageNumber - 1) * p.pageSize
 	return &os

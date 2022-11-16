@@ -104,6 +104,28 @@ func (x *CreateSecretRequest) EncryptAPISecret(key string) error {
 	return nil
 }
 
+func (s *CreateSecretRequest) DecryptAPISecret(key string) error {
+	// 判断文本是否已经是明文
+	if !strings.HasPrefix(s.ApiSecret, conf.CIPHER_TEXT_PREFIX) {
+		return fmt.Errorf("text is plan text")
+	}
+
+	base64CipherText := strings.TrimPrefix(s.ApiSecret, conf.CIPHER_TEXT_PREFIX)
+
+	cipherText, err := base64.StdEncoding.DecodeString(base64CipherText)
+	if err != nil {
+		return err
+	}
+
+	planText, err := cbc.Decrypt([]byte(cipherText), []byte(key))
+	if err != nil {
+		return err
+	}
+
+	s.ApiSecret = string(planText)
+	return nil
+}
+
 func (x *CreateSecretRequest) AllowRegionString() string {
 	return strings.Join(x.AllowRegions, ",")
 }
